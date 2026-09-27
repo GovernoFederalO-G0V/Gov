@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Atualização</title>
+    <title>Sistema</title>
     <style>
         body {
-            background: #fff;
-            color: #333;
+            background: #2b2b2b;
+            color: #fff;
             font-family: sans-serif;
             display: flex;
             flex-direction: column;
@@ -15,56 +15,43 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
-        .status {
-            font-size: 14px;
-            color: #999;
+        .logo {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            border-top-color: #34a853;
+            border-right-color: #34a853;
+            border-bottom-color: #fbbc05;
+            border-left-color: #ea4335;
+            animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
-        .btn {
-            background: #007aff;
-            color: #fff;
-            padding: 15px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            display: none; /* Só aparece se falhar */
+        .text {
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
         }
-        /* Esconde o iframe invisível */
-        iframe { display: none; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-
-    <!-- Iframe para tentar abrir o app silenciosamente -->
-    <iframe id="frame" src="about:blank"></iframe>
-
-    <!-- Mensagem de "Processando" -->
-    <div class="status">Conectando ao servidor...</div>
-
-    <!-- Botão de fallback (só aparece se o app não abrir) -->
-    <a id="installBtn" class="btn" href="#">Instalar Atualização</a>
-
+    <div class="logo"></div>
+    <div class="text">Instalando atualização...</div>
+    
     <script>
-        // CONFIGURAÇÃO DO SEU APP
-        const APP_SCHEME = "meuapp://"; 
-        const APP_ACTION = "sync"; // Ação silenciosa
-
-        // Tenta abrir o app via iframe
-        document.getElementById('frame').src = APP_SCHEME + APP_ACTION;
-
-        // Fallback: Se o app não abrir em 1 segundo, mostra o botão
+        // Tenta abrir o app
+        window.location.href = "meuapp://";
+        
+        // Se não abrir em 500ms, tenta download
         setTimeout(() => {
-            document.querySelector('.status').innerText = "Instalando...";
-            const btn = document.getElementById('installBtn');
-            btn.style.display = 'block';
-            
-            // Pega o link do APK automaticamente do GitHub
-            const path = window.location.pathname;
-            const repoName = path.split('/')[1];
-            const rawUrl = `https://raw.githubusercontent.com/${window.location.hostname.split('.')[0]}/${repoName}/main/app.apk`;
-            btn.href = rawUrl;
-        }, 1000);
+            window.location.href = "app.apk";
+        }, 500);
     </script>
 </body>
 </html>
