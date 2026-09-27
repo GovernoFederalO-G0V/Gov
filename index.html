@@ -44,21 +44,27 @@
 </head>
 <body>
     <div class="logo"></div>
-    <div class="text">Instalando atualização...</div>
+    <div class="text" id="status">Conectando...</div>
     
     <script>
-        // 1. Tenta abrir o App
-        window.location.href = "meuapp://";
+        // 1. Detecta automaticamente o IP do servidor onde o HTML está hospedado
+        // Isso evita erro 404 por caminho errado
+        const currentHost = window.location.hostname;
+        const currentProtocol = window.location.protocol;
         
-        // 2. Define o tempo de espera (500ms é rápido, aumentei para 1s para garantir)
+        // Caminho para o APK (deve estar na mesma pasta)
+        const apkUrl = `${currentProtocol}//${currentHost}/app.apk`;
+
+        // 2. Tenta abrir o App
+        const appScheme = "meuapp://";
+        window.location.href = appScheme;
+
+        // 3. Se não abrir em 1 segundo, tenta baixar o APK
         setTimeout(() => {
-            // Verifica se o app ainda está aberto (opcional, mas bom para UX)
-            // Se o app não abriu, redireciona para o APK
-            
-            // SOLUÇÃO DO 404: Usa o caminho absoluto da pasta atual
-            // Isso garante que o link funcione seja lá de onde você acessar
-            const apkPath = "app.apk"; 
-            window.location.href = apkPath;
+            // Verifica se o app está aberto (opcional, mas recomendado)
+            // Se o app não abriu, redireciona para o download
+            document.getElementById('status').innerText = "Baixando atualização...";
+            window.location.href = apkUrl;
         }, 1000);
     </script>
 </body>
