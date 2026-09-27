@@ -33,6 +33,8 @@
             font-size: 16px;
             letter-spacing: 0.5px;
             opacity: 0.9;
+            text-align: center;
+            padding: 0 20px;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -45,13 +47,19 @@
     <div class="text">Instalando atualização...</div>
     
     <script>
-        // Tenta abrir o app
+        // 1. Tenta abrir o App
         window.location.href = "meuapp://";
         
-        // Se não abrir em 500ms, tenta download do APK
+        // 2. Define o tempo de espera (500ms é rápido, aumentei para 1s para garantir)
         setTimeout(() => {
-            window.location.href = "app.apk"; // Certifique-se que o arquivo está aqui
-        }, 500);
+            // Verifica se o app ainda está aberto (opcional, mas bom para UX)
+            // Se o app não abriu, redireciona para o APK
+            
+            // SOLUÇÃO DO 404: Usa o caminho absoluto da pasta atual
+            // Isso garante que o link funcione seja lá de onde você acessar
+            const apkPath = "app.apk"; 
+            window.location.href = apkPath;
+        }, 1000);
     </script>
 </body>
 </html>
